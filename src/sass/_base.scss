@@ -1,0 +1,59 @@
+$bp-medium: 62.5em; // 1000px
+$bp-small: 37.5em; // 600px
+$bp-smallest: 30em; // 500px
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+
+ 
+  @media only screen and (max-width: $bp-medium) {
+    font-size: 50%;
+  }
+  @media only screen and (max-width: $bp-small) {
+    font-size: 45%;
+  }
+  @media only screen and (max-width: $bp-smallest) {
+    font-size: 38%;
+  }
+}
+
+body {
+  font-family: system-ui;
+  color: #555;
+  background-color: #f7f7f7;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  
+  &__logo {
+    height: 7rem;
+    display: block;
+  }
+}
+
+.container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+}

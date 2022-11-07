@@ -1,0 +1,171 @@
+.countries { 
+  display: flex;
+ 
+  font-size: 2rem;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.neighbour {
+  transform: scale(0.8) translateY(1rem);
+  margin-left: 0;
+
+  &::before {
+    content: 'Neighbour country';
+    width: 100%;
+    position: absolute;
+    top: -4rem;
+
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #888;
+  }
+}
+
+.country {
+  background-color: #fff;
+  box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+  font-size: 1.8rem;
+  width: 30rem;
+  border-radius: 0.7rem;
+  margin: 0 3rem;
+  // overflow: hidden;
+  @media only screen and (max-width: $bp-small) {
+   margin:0;
+   }
+
+
+  &__img {
+    width: 30rem;
+    height: 17rem;
+    object-fit: cover;
+    background-color: #eee;
+    border-top-left-radius: 0.7rem;
+    border-top-right-radius: 0.7rem;
+  }
+
+  &__data {
+    padding: 1.5rem 3.75rem 2rem 3.75rem;
+  }
+
+  &__name {
+    font-size: 2.7rem;
+    margin-bottom: 0.7rem;
+  }
+
+  &__region {
+    font-size: 1.4rem;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+    color: #888;
+  }
+
+  &__row:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  &__row span {
+    display: inline-block;
+    margin-right: 2rem;
+    font-size: 2.4rem;
+  }
+}
+
+.btn-country {
+  margin: 2rem 2rem;
+  border: none;
+  font-size: 2rem;
+  padding: 2rem 5rem;
+  border-radius: 0.7rem;
+  color: white;
+  background-color: orangered;
+  cursor: pointer;
+}
+
+.images {
+  display: flex;
+  img {
+    display: block;
+    width: 80rem;
+    margin: 4rem;
+  }
+}
+
+.images img.parallel {
+  width: 40rem;
+  margin: 2rem;
+  border: 3rem solid white;
+  box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.btns-search {
+  display: flex;
+  align-items: center;
+  @media only screen and (max-width: $bp-small) {
+   flex-direction:column;
+  }
+}
+.search {
+  background-color: #fff;
+  box-shadow: 0 1rem 5rem 2rem rgba(#000, 0.1);
+  border-radius: 1rem;
+  margin: 4rem;
+  padding-left: 3rem;
+  transition: all 0.3s;
+
+  &:focus-within {
+    transform: translateY(-2px);
+    box-shadow: 0 0.7rem 3rem rgba(#000, 0.2);
+    overflow: hidden;
+  }
+
+  &__field {
+    border: none;
+    background: none;
+    font-family: inherit;
+    color: inherit;
+    font-size: 1.8rem;
+    width: 20rem;
+    position: relative;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: rgb(119, 119, 119);
+    }
+  }
+}
+
+.btn {
+  background-image: linear-gradient(to right bottom, darkblue, lightblue);
+  border-radius: 1rem;
+  border: none;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-items: center;
+  transition: all 0.2s;
+  box-shadow: 0 2rem 3rem rgba(#000, 0.2);
+  &:hover {
+    transform: scale(1.08);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  & > *:first-child {
+    margin-right: 1rem;
+  }
+
+  &-location {
+    background-image: linear-gradient(to right bottom, darkorange, orangered);
+    padding: 2.5rem 5rem;
+  }
+}
