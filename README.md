@@ -2,11 +2,13 @@
 
 [GeographyApp](https://geographyapp.netlify.app/)
 
-Search and learn interesting thing of your favorites countries and their first neighbour.
+This code implements functionality for searching and displaying country data through API calls and DOM manipulation.
 
-Search and learn interesting things of your favorites countries and their first neighbour.
+A high level of error handling is implemented to ensure that the user receives feedback in case of incorrect input or other errors.
 
-Also you can access information of the country of where you are located in, by clicking the button "where am I". Aplication will take your location and show you in which country you are.
+The code also includes functionality to display information on neighboring countries based on the selected country.
+
+Additionally, it allows the user to retrieve and display information about their current location through the use of the geolocation API.
 
 ## Getting Started
 
