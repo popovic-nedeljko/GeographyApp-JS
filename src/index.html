@@ -1,52 +1,207 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
     <link rel="shortcut icon" href="./img/logo.png" type="image/x-icon" />
-
     <link rel="stylesheet" href="./sass/main.scss" />
     <script type="module" defer src="./script.js"></script>
-    <!-- <script type="module" defer src="./JS/controler.js"></script> -->
-
     <title>GeographyApp</title>
   </head>
   <body>
-    <header class="header">
-      <a href="." onclick="window.location.reload(true);">
-        <img src="./img/logo3.png" alt="Logo" class="header__logo"
-      /></a>
-    </header>
-    <main class="container">
-      <div class="countries">
-        <!--
-        <article class="country">
-          <img class="country__img" src="" />
-          <div class="country__data">
-            <h3 class="country__name">COUNTRY</h3>
-            <h4 class="country__region">REGION</h4>
-            <p class="country__row"><span>👫</span>POP people</p>
-            <p class="country__row"><span>🗣️</span>LANG</p>
-            <p class="country__row"><span>💰</span>CUR</p>
-          </div>
-        </article>
-        -->
-      </div>
-      <div class="btns-search">
-        <form class="search">
-          <input
-            type="text"
-            class="search__field"
-            placeholder="Insert countries name..."
+    <div class="app">
+      <!-- Blue right panel (background element) -->
+      <div class="app__panel"></div>
+
+      <!-- Header / Logo -->
+      <header class="header">
+        <a href=".">
+          <img
+            src="./img/logo3.png"
+            alt="Geography Logo"
+            class="header__logo"
           />
-          <button class="btn btn-country">
-            <span>Search</span>
+        </a>
+      </header>
+
+      <!-- Main content: hero + cards -->
+      <main class="main">
+        <!-- Left hero text -->
+        <div class="hero">
+          <h1 class="hero__title">
+            Explore<br />the <span class="hero__title--accent">World</span>
+          </h1>
+          <div class="hero__divider"></div>
+          <p class="hero__desc">
+            Search any country and discover<br />
+            key facts, currency, capital and<br />
+            its neighbouring countries.
+          </p>
+        </div>
+
+        <!-- Country cards rendered by JS -->
+        <div class="countries" id="countries-container"></div>
+      </main>
+
+      <!-- Search section -->
+      <div class="search-wrap">
+        <div class="search-bar">
+          <!-- Search icon -->
+          <svg
+            class="search-bar__icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="10.5"
+              cy="10.5"
+              r="6.5"
+              stroke="#94A3B8"
+              stroke-width="2"
+            />
+            <path
+              d="M20 20l-4-4"
+              stroke="#94A3B8"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+
+          <!-- Form: input + search button -->
+          <form class="search-bar__form">
+            <input
+              type="text"
+              class="search__field"
+              placeholder="Enter country name..."
+              autocomplete="off"
+            />
+            <button class="btn btn-country" type="submit">
+              Search
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 12h14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M13 6l6 6-6 6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </form>
+
+          <!-- Location button -->
+          <button class="btn btn-location" type="button">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="3.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="8"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+              <path
+                d="M12 1v3.5M12 19.5V23M1 12h3.5M19.5 12H23"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+            Where am I?
           </button>
-        </form>
-        <button class="btn btn-location">Where am I?</button>
+        </div>
       </div>
-    </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span class="footer__item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <path
+              d="M12 3c-2.5 3.5-3.5 6-3.5 9s1 5.5 3.5 9M12 3c2.5 3.5 3.5 6 3.5 9s-1 5.5-3.5 9M3 12h18"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+          </svg>
+          Explore countries
+        </span>
+        <span class="footer__item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2 5l7-2 6 2 7-2v16l-7 2-6-2-7 2V5z"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9 3v16M15 5v16"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+          </svg>
+          Discover neighbours
+        </span>
+        <span class="footer__item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <path
+              d="M8.5 12l2.5 2.5 5-5"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Learn the world
+        </span>
+      </footer>
+    </div>
   </body>
 </html>

@@ -1,59 +1,129 @@
+// Breakpoints
+$bp-xlarge: 90em; // 1440px
+$bp-large: 75em; // 1200px
 $bp-medium: 62.5em; // 1000px
-$bp-small: 37.5em; // 600px
-$bp-smallest: 30em; // 500px
+$bp-small: 48em; // 768px
+$bp-xsmall: 30em; // 480px
 
-* {
-  margin: 0;
-  padding: 0;
-}
+// Colors
+$color-blue: #2563eb;
+$color-blue-dark: #1d4ed8;
+$color-blue-panel1: #3b82f6;
+$color-blue-panel2: #1e40af;
+$color-orange: #f97316;
+$color-orange-dark: #ea580c;
+$color-text-dark: #1e293b;
+$color-text-gray: #64748b;
+$color-bg: #e8f0fe;
+$color-white: #ffffff;
+$color-region-bg: #dbeafe;
+$color-region-text: #1d4ed8;
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-  box-sizing: border-box;
   font-size: 62.5%;
 
- 
+  @media only screen and (max-width: $bp-large) {
+    font-size: 56%;
+  }
   @media only screen and (max-width: $bp-medium) {
     font-size: 50%;
   }
   @media only screen and (max-width: $bp-small) {
-    font-size: 45%;
+    font-size: 46%;
   }
-  @media only screen and (max-width: $bp-smallest) {
-    font-size: 38%;
+  @media only screen and (max-width: $bp-xsmall) {
+    font-size: 40%;
   }
 }
 
 body {
-  font-family: system-ui;
-  color: #555;
-  background-color: #f7f7f7;
-  min-height: 100vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  color: $color-text-dark;
+  overflow-x: hidden;
 }
 
-.header {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  
-  &__logo {
-    height: 7rem;
-    display: block;
+// ─── App shell ────────────────────────────────────────────
+.app {
+  position: relative;
+  height: 100vh;
+  min-height: 56rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  // bg.webp = world map watermark in white/left area
+  background: $color-bg url('../img/bg.webp') no-repeat center left / cover;
+
+  @media only screen and (max-width: $bp-small) {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
   }
 }
 
-.container {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
+// Blue gradient panel (right side)
+.app__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 58%;
+  height: 100%;
+  border-radius: 5rem 0 0 5rem;
+  z-index: 0;
+  pointer-events: none;
 
+  // Decorative dots in top-right corner
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    width: 14rem;
+    height: 9rem;
+    background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.35) 1.5px,
+      transparent 1.5px
+    );
+    background-size: 1.6rem 1.6rem;
+  }
+
+  @media only screen and (max-width: $bp-medium) {
+    width: 52%;
+    border-radius: 4rem 0 0 4rem;
+  }
+  @media only screen and (max-width: $bp-small) {
+    display: none;
+  }
+}
+
+// ─── Header ──────────────────────────────────────────────
+.header {
+  position: relative;
+  z-index: 10;
+  padding: 1.8rem 3.6rem;
+  flex-shrink: 0;
+
+  &__logo {
+    height: 4.5rem;
+    display: block;
+  }
+
+  @media only screen and (max-width: $bp-xsmall) {
+    padding: 1.8rem 2rem;
+    &__logo {
+      height: 4.5rem;
+    }
+  }
 }

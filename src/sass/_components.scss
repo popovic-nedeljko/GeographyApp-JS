@@ -1,171 +1,666 @@
-.countries { 
+// ─── Main layout ─────────────────────────────────────────
+.main {
+  position: relative;
+  z-index: 5;
+  flex: 1;
   display: flex;
- 
-  font-size: 2rem;
-  opacity: 0;
-  transition: opacity 1s;
-}
+  align-items: center;
+  padding: 0 10% 0 6%;
+  gap: 2rem;
+  overflow: hidden;
 
-.neighbour {
-  transform: scale(0.8) translateY(1rem);
-  margin-left: 0;
-
-  &::before {
-    content: 'Neighbour country';
-    width: 100%;
-    position: absolute;
-    top: -4rem;
-
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #888;
+  @media only screen and (max-width: $bp-medium) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 2rem 0;
+    gap: 2.5rem;
+    overflow: visible;
+  }
+  @media only screen and (max-width: $bp-small) {
+    padding: 1.5rem 1.5rem 0;
+    gap: 2rem;
   }
 }
 
-.country {
-  background-color: #fff;
-  box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
-  font-size: 1.8rem;
-  width: 30rem;
-  border-radius: 0.7rem;
-  margin: 0 3rem;
-  // overflow: hidden;
+// ─── Hero ─────────────────────────────────────────────────
+.hero {
+  flex: 0 0 32rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding-right: 2rem;
+
+  @media only screen and (max-width: $bp-large) {
+    flex: 0 0 26rem;
+  }
+  @media only screen and (max-width: $bp-medium) {
+    flex: none;
+    text-align: center;
+    align-items: center;
+    padding-right: 0;
+  }
+}
+
+.hero__title {
+  font-size: 5.8rem;
+  font-weight: 800;
+  line-height: 1.08;
+  color: $color-text-dark;
+  letter-spacing: -0.02em;
+
+  &--accent {
+    color: $color-blue;
+  }
+
+  @media only screen and (max-width: $bp-large) {
+    font-size: 5.2rem;
+  }
+  @media only screen and (max-width: $bp-medium) {
+    font-size: 4.6rem;
+  }
   @media only screen and (max-width: $bp-small) {
-   margin:0;
-   }
+    font-size: 4rem;
+  }
+  @media only screen and (max-width: $bp-xsmall) {
+    font-size: 3.4rem;
+  }
+}
 
+.hero__divider {
+  width: 4.5rem;
+  height: 0.35rem;
+  background-color: $color-blue;
+  border-radius: 2px;
 
-  &__img {
-    width: 30rem;
+  @media only screen and (max-width: $bp-medium) {
+    margin: 0 auto;
+  }
+}
+
+.hero__desc {
+  font-size: 1.55rem;
+  line-height: 1.75;
+  color: $color-text-gray;
+
+  @media only screen and (max-width: $bp-medium) {
+    font-size: 1.5rem;
+    br {
+      display: none;
+    }
+  }
+}
+
+.hero__pin {
+  position: relative;
+  width: 13rem;
+  height: 7rem;
+  margin-top: 0.5rem;
+
+  @media only screen and (max-width: $bp-medium) {
+    display: none;
+  }
+}
+
+.hero__pin-arc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__pin-icon {
+  position: absolute;
+  bottom: 0.2rem;
+  left: 4.5rem;
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+// ─── Countries container ──────────────────────────────────
+.countries {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rem;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  height: 100%;
+
+  @media only screen and (max-width: $bp-medium) {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  @media only screen and (max-width: $bp-small) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+// ─── Country card ─────────────────────────────────────────
+.country-card {
+  background: $color-white;
+  border-radius: 2rem;
+  box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.14);
+  width: 27rem;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  &__flag {
+    width: 100%;
     height: 17rem;
     object-fit: cover;
-    background-color: #eee;
-    border-top-left-radius: 0.7rem;
-    border-top-right-radius: 0.7rem;
+    display: block;
+    background-color: #e2e8f0;
   }
 
-  &__data {
-    padding: 1.5rem 3.75rem 2rem 3.75rem;
+  &__body {
+    padding: 1.8rem 2rem 2.2rem;
   }
 
   &__name {
-    font-size: 2.7rem;
-    margin-bottom: 0.7rem;
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: $color-text-dark;
+    margin-bottom: 0.8rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
   }
 
   &__region {
-    font-size: 1.4rem;
-    margin-bottom: 2.5rem;
-    text-transform: uppercase;
-    color: #888;
-  }
-
-  &__row:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-
-  &__row span {
     display: inline-block;
-    margin-right: 2rem;
-    font-size: 2.4rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: $color-region-text;
+    background-color: $color-region-bg;
+    border-radius: 3rem;
+    padding: 0.35rem 1.2rem;
+    margin-bottom: 1.6rem;
   }
-}
 
-.btn-country {
-  margin: 2rem 2rem;
-  border: none;
-  font-size: 2rem;
-  padding: 2rem 5rem;
-  border-radius: 0.7rem;
-  color: white;
-  background-color: orangered;
-  cursor: pointer;
-}
-
-.images {
-  display: flex;
-  img {
-    display: block;
-    width: 80rem;
-    margin: 4rem;
+  &__info {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
-}
 
-.images img.parallel {
-  width: 40rem;
-  margin: 2rem;
-  border: 3rem solid white;
-  box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
-}
+  &__info-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
 
-.btns-search {
-  display: flex;
-  align-items: center;
+  &__info-icon {
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    background-color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 1.7rem;
+      height: 1.7rem;
+    }
+  }
+
+  &__info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  &__info-value {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: $color-text-dark;
+    line-height: 1.2;
+  }
+
+  &__info-label {
+    font-size: 1.05rem;
+    color: $color-text-gray;
+    line-height: 1;
+  }
+
+  @media only screen and (max-width: $bp-large) {
+    width: 25rem;
+    &__flag {
+      height: 15rem;
+    }
+    &__name {
+      font-size: 2.1rem;
+    }
+  }
+  @media only screen and (max-width: $bp-medium) {
+    width: 26rem;
+    &__flag {
+      height: 14rem;
+    }
+  }
   @media only screen and (max-width: $bp-small) {
-   flex-direction:column;
-  }
-}
-.search {
-  background-color: #fff;
-  box-shadow: 0 1rem 5rem 2rem rgba(#000, 0.1);
-  border-radius: 1rem;
-  margin: 4rem;
-  padding-left: 3rem;
-  transition: all 0.3s;
-
-  &:focus-within {
-    transform: translateY(-2px);
-    box-shadow: 0 0.7rem 3rem rgba(#000, 0.2);
-    overflow: hidden;
-  }
-
-  &__field {
-    border: none;
-    background: none;
-    font-family: inherit;
-    color: inherit;
-    font-size: 1.8rem;
-    width: 20rem;
-    position: relative;
-
-    &:focus {
-      outline: none;
+    width: 32rem;
+    &__flag {
+      height: 16rem;
     }
-
-    &::placeholder {
-      color: rgb(119, 119, 119);
+    &__name {
+      font-size: 2.4rem;
     }
+  }
+  @media only screen and (max-width: $bp-xsmall) {
+    width: 100%;
+    max-width: 34rem;
   }
 }
 
-.btn {
-  background-image: linear-gradient(to right bottom, darkblue, lightblue);
-  border-radius: 1rem;
-  border: none;
-  text-transform: uppercase;
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: 600;
-  cursor: pointer;
+// Neighbour card wrapper
+.neighbour-wrap {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  transition: all 0.2s;
-  box-shadow: 0 2rem 3rem rgba(#000, 0.2);
-  &:hover {
-    transform: scale(1.08);
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.neighbour-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+
+  @media only screen and (max-width: $bp-medium) {
+    color: $color-text-gray;
+  }
+}
+
+// Neighbour card — smaller than the main card (~80% scale)
+.neighbour-wrap .country-card {
+  width: 22rem;
+
+  .country-card__flag {
+    height: 13.5rem;
+  }
+
+  .country-card__body {
+    padding: 1.4rem 1.6rem 1.8rem;
+  }
+
+  .country-card__name {
+    font-size: 1.9rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .country-card__region {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .country-card__info {
+    gap: 0.75rem;
+  }
+
+  .country-card__info-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+
+    svg {
+      width: 1.4rem;
+      height: 1.4rem;
+    }
+  }
+
+  .country-card__info-value {
+    font-size: 1.2rem;
+  }
+
+  .country-card__info-label {
+    font-size: 0.9rem;
+  }
+
+  @media only screen and (max-width: $bp-large) {
+    width: 20rem;
+
+    .country-card__flag {
+      height: 12rem;
+    }
+  }
+
+  @media only screen and (max-width: $bp-medium) {
+    width: 26rem;
+
+    .country-card__flag {
+      height: 14rem;
+    }
+
+    .country-card__name {
+      font-size: 2.1rem;
+    }
+
+    .country-card__region {
+      font-size: 1.05rem;
+      padding: 0.35rem 1.2rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .country-card__info {
+      gap: 1rem;
+    }
+
+    .country-card__info-icon {
+      width: 3.4rem;
+      height: 3.4rem;
+
+      svg {
+        width: 1.7rem;
+        height: 1.7rem;
+      }
+    }
+
+    .country-card__info-value {
+      font-size: 1.45rem;
+    }
+
+    .country-card__info-label {
+      font-size: 1.05rem;
+    }
+  }
+}
+
+// ─── Loading pulse (skeleton only, container transition unaffected) ──
+@keyframes ph-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.countries--loading .skeleton,
+.countries--loading .country-card__flag-ph {
+  animation: ph-pulse 1.4s ease-in-out infinite;
+}
+
+// ─── Placeholder / skeleton cards ────────────────────────
+.country-card__flag-ph {
+  width: 100%;
+  height: 17rem;
+  background: linear-gradient(160deg, #60a5fa 0%, #3b82f6 45%, #1e40af 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 5.5rem;
+    height: 5.5rem;
+    opacity: 0.88;
+  }
+}
+
+.neighbour-wrap .country-card__flag-ph {
+  height: 13.5rem;
+
+  svg {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+}
+
+.skeleton {
+  background: #e2e8f0;
+  border-radius: 10rem;
+
+  &--name {
+    height: 2.2rem;
+    width: 62%;
+    margin-bottom: 0.8rem;
+  }
+
+  &--region {
+    height: 1.8rem;
+    width: 36%;
+    background: #dbeafe;
+    margin-bottom: 1.6rem;
+  }
+
+  &--value {
+    height: 1.3rem;
+    width: 72%;
+    margin-bottom: 0.4rem;
+  }
+
+  &--label {
+    height: 1rem;
+    width: 52%;
+  }
+}
+
+.neighbour-wrap .skeleton {
+  &--name {
+    height: 1.8rem;
+  }
+
+  &--region {
+    height: 1.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  &--value {
+    height: 1.1rem;
+  }
+
+  &--label {
+    height: 0.85rem;
+  }
+}
+
+// ─── Loading & Error ──────────────────────────────────────
+.loading {
+  font-size: 1.8rem;
+  color: $color-text-gray;
+  text-align: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.error-msg {
+  font-size: 1.6rem;
+  color: #dc2626;
+  text-align: center;
+  padding: 2rem;
+  max-width: 40rem;
+  line-height: 1.6;
+}
+
+// ─── Search bar ───────────────────────────────────────────
+.search-wrap {
+  position: relative;
+  z-index: 10;
+  padding: 1.5rem 15% 1.8rem;
+  flex-shrink: 0;
+
+  @media only screen and (max-width: $bp-small) {
+    padding: 1.5rem 1.5rem 1.8rem;
+  }
+}
+
+.search-bar {
+  background: $color-white;
+  border-radius: 10rem;
+  box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.13);
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 0.7rem 0.7rem 2.4rem;
+  gap: 0;
+
+  &__icon {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    margin-right: 1.2rem;
+    opacity: 0.5;
+  }
+
+  &__form {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  @media only screen and (max-width: $bp-small) {
+    flex-wrap: wrap;
+    border-radius: 2rem;
+    padding: 1.2rem 1.2rem;
+    gap: 0.8rem;
+
+    &__icon {
+      display: none;
+    }
+    &__form {
+      width: 100%;
+      flex: none;
+    }
+  }
+}
+
+.search__field {
+  flex: 1;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 1.65rem;
+  color: $color-text-dark;
+  min-width: 0;
+  padding: 0.5rem 0;
+
+  &::placeholder {
+    color: #94a3b8;
   }
 
   &:focus {
     outline: none;
   }
+}
 
-  & > *:first-child {
-    margin-right: 1rem;
+// ─── Buttons ──────────────────────────────────────────────
+.btn {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  svg {
+    width: 1.7rem;
+    height: 1.7rem;
+    flex-shrink: 0;
   }
 
-  &-location {
-    background-image: linear-gradient(to right bottom, darkorange, orangered);
-    padding: 2.5rem 5rem;
+  &:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+  }
+  &:active {
+    transform: translateY(0);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.btn-country {
+  background: linear-gradient(135deg, #1e40af 0%, $color-blue 100%);
+  color: $color-white;
+  font-size: 1.45rem;
+  padding: 1.35rem 3.2rem;
+  border-radius: 10rem;
+  margin-left: 0.8rem;
+
+  @media only screen and (max-width: $bp-small) {
+    width: 100%;
+    justify-content: center;
+    border-radius: 1rem;
+    padding: 1.4rem;
+    margin-left: 0;
+  }
+}
+
+.btn-location {
+  background: linear-gradient(
+    135deg,
+    $color-orange-dark 0%,
+    $color-orange 100%
+  );
+  color: $color-white;
+  font-size: 1.45rem;
+  padding: 1.35rem 3rem;
+  border-radius: 10rem;
+  margin-left: 0.8rem;
+
+  @media only screen and (max-width: $bp-small) {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+    border-radius: 1rem;
+    padding: 1.4rem;
+  }
+}
+
+// ─── Footer ───────────────────────────────────────────────
+.footer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+  padding: 0 3.6rem 2rem;
+  flex-shrink: 0;
+
+  @media only screen and (max-width: $bp-medium) {
+    gap: 3rem;
+  }
+  @media only screen and (max-width: $bp-small) {
+    gap: 2rem;
+    padding: 0 1.5rem 2rem;
+    flex-wrap: wrap;
+  }
+}
+
+.footer__item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: $color-text-gray;
+
+  svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    color: $color-blue;
   }
 }
