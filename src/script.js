@@ -145,39 +145,58 @@ const renderError = function (msg) {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+const COUNTRIES_URL =
+  'https://cdn.jsdelivr.net/npm/world-countries/countries.json';
+let countriesCache = null;
+
+const loadCountries = async () => {
+  if (countriesCache) return countriesCache;
+  const res = await fetch(COUNTRIES_URL);
+  if (!res.ok) throw new Error('Failed to load country database');
+  countriesCache = await res.json();
+  return countriesCache;
+};
+
+const findByName = (countries, query) => {
+  const q = query.toLowerCase().trim();
+  return countries.find(c => {
+    if (c.name.common.toLowerCase().includes(q)) return true;
+    if (c.name.official.toLowerCase().includes(q)) return true;
+    return Object.values(c.name.nativeName || {}).some(
+      n => n.common?.toLowerCase().includes(q) || n.official?.toLowerCase().includes(q)
+    );
+  });
+};
+
+const findByCode = (countries, cca3) => countries.find(c => c.cca3 === cca3);
+
 const getCountryData = async function (country) {
   try {
     if (!country) return;
-
-    // Skeleton cards: add pulse to signal loading; real cards: just keep visible
     countriesContainer.classList.add('countries--loading');
 
-    const resCountry = await fetch(`https://restcountries.com/v3.1/name/${country}`);
-    if (!resCountry.ok)
-      throw new Error(`Country not found (${resCountry.status})`);
-    const data = await resCountry.json();
+    const countries = await loadCountries();
+    const match = findByName(countries, country);
+    if (!match) throw new Error('Country not found (404)');
 
-    // Fetch neighbour in parallel with processing
-    let dataNeighbour = null;
-    const neighbour = data[0].borders?.[0];
-    if (neighbour) {
-      const resNeighbour = await fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
-      if (resNeighbour.ok) dataNeighbour = await resNeighbour.json();
-    }
+    const neighbourCode = match.borders?.[0];
+    const neighbour = neighbourCode ? findByCode(countries, neighbourCode) : null;
 
     await fadeOut();
     countriesContainer.classList.remove('countries--loading');
     countriesContainer.innerHTML = '';
-    renderCard(data[0]);
-    if (dataNeighbour) renderCard(dataNeighbour[0], true);
+    renderCard(match);
+    if (neighbour) renderCard(neighbour, true);
     fadeIn();
 
   } catch (err) {
     countriesContainer.classList.remove('countries--loading');
     await fadeOut();
-    renderError(`Something went wrong: ${err.message}. Please enter a correct country name.`);
+    const msg = err.message === 'Failed to fetch'
+      ? 'Could not reach the countries API. Check your connection or try again later.'
+      : `${err.message}. Please enter a correct country name.`;
+    renderError(msg);
     fadeIn();
-    console.log(err.message);
   }
   countrySearch.value = '';
 };
@@ -201,21 +220,23 @@ const whereAmI = async function () {
     if (dataGeo.error)    throw new Error('Could not determine location. Try again later.');
     if (!dataGeo.country) throw new Error('Country data unavailable for your coordinates.');
 
-    const resCountry = await fetch(`https://restcountries.com/v3.1/name/${dataGeo.country}`);
-    if (!resCountry.ok) throw new Error(`Country not found (${resCountry.status})`);
-
-    const data = await resCountry.json();
+    const countries = await loadCountries();
+    const match = findByName(countries, dataGeo.country);
+    if (!match) throw new Error('Country not found for your location.');
 
     await fadeOut();
     countriesContainer.classList.remove('countries--loading');
     countriesContainer.innerHTML = '';
-    renderCard(data[0]);
+    renderCard(match);
     fadeIn();
 
   } catch (err) {
     countriesContainer.classList.remove('countries--loading');
     await fadeOut();
-    renderError(`Something went wrong: ${err.message}`);
+    const msg = err.message === 'Failed to fetch'
+      ? 'Could not reach the API. Check your connection or try again later.'
+      : `Something went wrong: ${err.message}`;
+    renderError(msg);
     fadeIn();
   }
 };
