@@ -52,9 +52,9 @@ const fadeIn = () => { countriesContainer.style.opacity = '1'; };
 
 ///////////////////////////////////////////////////////////////////////////
 const renderCard = function (data, isNeighbour = false) {
-  const language = Object.values(data.languages ?? {})[0] ?? 'N/A';
+  const language = data.languages?.[0]?.name ?? 'N/A';
   const currency = Object.values(data.currencies ?? {})[0]?.name ?? 'N/A';
-  const capital  = data.capital?.[0] ?? 'N/A';
+  const capital  = data.capitals?.[0]?.name ?? 'N/A';
 
   const rows = [
     { icon: icons.population, value: formatPopulation(data.population), label: 'Population' },
@@ -76,9 +76,9 @@ const renderCard = function (data, isNeighbour = false) {
 
   const card = `
     <article class="country-card">
-      <img class="country-card__flag" src="${data.flags.svg}" alt="Flag of ${data.name.common}" />
+      <img class="country-card__flag" src="${data.flag?.url_svg}" alt="Flag of ${data.names?.common}" />
       <div class="country-card__body">
-        <h3 class="country-card__name">${data.name.common}</h3>
+        <h3 class="country-card__name">${data.names?.common}</h3>
         <span class="country-card__region">${data.region}</span>
         <ul class="country-card__info">${infoHtml}</ul>
       </div>
@@ -145,42 +145,30 @@ const renderError = function (msg) {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-const COUNTRIES_URL =
-  'https://cdn.jsdelivr.net/npm/world-countries/countries.json';
-let countriesCache = null;
+const API_KEY = 'rc_live_db0c2985df924cff99f42fef72cb1dc0';
+const API_BASE = 'https://api.restcountries.com/countries/v5';
+const API_HEADERS = { Authorization: `Bearer ${API_KEY}` };
 
-const loadCountries = async () => {
-  if (countriesCache) return countriesCache;
-  const res = await fetch(COUNTRIES_URL);
-  if (!res.ok) throw new Error('Failed to load country database');
-  countriesCache = await res.json();
-  return countriesCache;
+const unwrap = json => {
+  const list = json?.data?.objects ?? json?.data ?? json;
+  return Array.isArray(list) ? list[0] : list;
 };
-
-const findByName = (countries, query) => {
-  const q = query.toLowerCase().trim();
-  return countries.find(c => {
-    if (c.name.common.toLowerCase().includes(q)) return true;
-    if (c.name.official.toLowerCase().includes(q)) return true;
-    return Object.values(c.name.nativeName || {}).some(
-      n => n.common?.toLowerCase().includes(q) || n.official?.toLowerCase().includes(q)
-    );
-  });
-};
-
-const findByCode = (countries, cca3) => countries.find(c => c.cca3 === cca3);
 
 const getCountryData = async function (country) {
   try {
     if (!country) return;
     countriesContainer.classList.add('countries--loading');
 
-    const countries = await loadCountries();
-    const match = findByName(countries, country);
-    if (!match) throw new Error('Country not found (404)');
+    const res = await fetch(`${API_BASE}/name?q=${encodeURIComponent(country)}`, { headers: API_HEADERS });
+    if (!res.ok) throw new Error('Country not found (404)');
+    const match = unwrap(await res.json());
 
     const neighbourCode = match.borders?.[0];
-    const neighbour = neighbourCode ? findByCode(countries, neighbourCode) : null;
+    let neighbour = null;
+    if (neighbourCode) {
+      const resN = await fetch(`${API_BASE}/codes.alpha_3/${neighbourCode}`, { headers: API_HEADERS });
+      if (resN.ok) neighbour = unwrap(await resN.json());
+    }
 
     await fadeOut();
     countriesContainer.classList.remove('countries--loading');
@@ -213,21 +201,22 @@ const whereAmI = async function () {
     const pos = await getPosition();
     const { latitude: lat, longitude: lng } = pos.coords;
 
-    const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    const resGeo = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+      { headers: { 'Accept-Language': 'en' } }
+    );
     if (!resGeo.ok) throw new Error(`Geocoding failed (${resGeo.status})`);
 
     const dataGeo = await resGeo.json();
-    if (dataGeo.error)    throw new Error('Could not determine location. Try again later.');
-    if (!dataGeo.country) throw new Error('Country data unavailable for your coordinates.');
+    if (!dataGeo.address?.country) throw new Error('Country data unavailable for your coordinates.');
 
-    const countries = await loadCountries();
-    const match = findByName(countries, dataGeo.country);
-    if (!match) throw new Error('Country not found for your location.');
+    const res = await fetch(`${API_BASE}/name?q=${encodeURIComponent(dataGeo.address.country)}`, { headers: API_HEADERS });
+    if (!res.ok) throw new Error('Country not found for your location.');
 
     await fadeOut();
     countriesContainer.classList.remove('countries--loading');
     countriesContainer.innerHTML = '';
-    renderCard(match);
+    renderCard(unwrap(await res.json()));
     fadeIn();
 
   } catch (err) {
